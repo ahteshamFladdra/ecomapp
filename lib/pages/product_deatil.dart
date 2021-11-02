@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import, use_key_in_widget_constructors, prefer_const_constructors, non_constant_identifier_names, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, sized_box_for_whitespace, unnecessary_new, duplicate_ignore, prefer_const_literals_to_create_immutables, camel_case_types, unnecessary_brace_in_string_interps
 
+import 'package:fashapp/pages/cart.dart';
 import 'package:fashapp/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:fashapp/main.dart';
@@ -192,13 +193,19 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
               ),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Cart()));
+                  },
                   icon: Icon(
                     Icons.add_shopping_cart,
                     color: Colors.red,
                   )),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Cart()));
+                  },
                   icon: Icon(
                     Icons.favorite_border,
                     color: Colors.red,

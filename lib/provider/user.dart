@@ -165,4 +165,6 @@ class UserProvider with ChangeNotifier {
     _userModel = await _userServices.getUserById(user!.uid);
     notifyListeners();
   }
+
+  static of(BuildContext context) {}
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, use_key_in_widget_constructors, unused_local_variable, recursive_getters, annotate_overrides, prefer_is_empty, unnecessary_new, prefer_const_constructors, duplicate_ignore, deprecated_member_use, prefer_const_literals_to_create_immutables, await_only_futures, non_constant_identifier_names, unused_field, unused_element, prefer_final_fields, curly_braces_in_flow_control_structures, avoid_unnecessary_containers
+// ignore_for_file: unused_import, use_key_in_widget_constructors, unused_local_variable, recursive_getters, annotate_overrides, prefer_is_empty, unnecessary_new, prefer_const_constructors, duplicate_ignore, deprecated_member_use, prefer_const_literals_to_create_immutables, await_only_futures, non_constant_identifier_names, unused_field, unused_element, prefer_final_fields, curly_braces_in_flow_control_structures, avoid_unnecessary_containers, avoid_print, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,10 +29,10 @@ class _LoginState extends State<Login> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
 
-  // final Map<String, String> _authData = {
-  //   'email': '',
-  //   'password': '',
-  // };
+  final Map<String, String> _authData = {
+    'email': '',
+    'password': '',
+  };
   void _showErrorDialog(String msg) {
     showDialog(
         context: context,
@@ -51,12 +51,14 @@ class _LoginState extends State<Login> {
   }
 
   // final GoogleSignIn googleSignIn = GoogleSignIn();
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  // final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
   late SharedPreferences preferences;
   bool loading = false;
   bool isLogedin = false;
+  bool hidePass = true;
 
-  Future<void> _submit() async {
+  Future<void> Login() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -111,10 +113,10 @@ class _LoginState extends State<Login> {
   //       idToken: googleSignInAuthentication?.idToken,
   //       accessToken: googleSignInAuthentication?.accessToken);
 
-  //   UserCredential userCredential =
-  //       await FirebaseAuth.instance.signInWithCredential(Authtrade);
+  // UserCredential userCredential =
+  //     await FirebaseAuth.instance.signInWithCredential(Authtrade);
 
-  //   final user = userCredential.user;
+  // final user = userCredential.user;
 
   //   if (user != null) {
   //     final QuerySnapshot result = await FirebaseFirestore.instance
@@ -146,7 +148,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     // final user = Provider.value(value: (context) => HomePage_Screen());
-    // final User = Provider.of<user>(context);
+    final User = Provider.of<Authentication>(context);
 
     return Scaffold(
       key: _key,
@@ -161,7 +163,7 @@ class _LoginState extends State<Login> {
           FlatButton(
             onPressed: () {
               Navigator.of(context)
-                  .pushReplacementNamed(HomePage_Screen.routeName);
+                  .pushReplacementNamed(Singup_Screen.routeName);
             },
             child: Row(
               children: [
@@ -295,8 +297,33 @@ class _LoginState extends State<Login> {
                             color: Colors.black,
                             elevation: 0.0,
                             child: MaterialButton(
-                              onPressed: () {
-                                HomePage_Screen();
+                              onPressed: () async {
+                                setState(() {
+                                  hidePass = true;
+                                });
+                                try {
+                                  final newUser =
+                                      await _auth.signInWithEmailAndPassword(
+                                          email: _email.toString(),
+                                          password: _password.toString());
+                                  print(newUser.toString());
+                                  if (newUser != null) {
+                                    Fluttertoast.showToast(
+                                        msg: "Login Successfull",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.blueAccent,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                    setState(() {
+                                      hidePass = false;
+                                    });
+                                  }
+                                } catch (e) {
+                                  Navigator.of(context).pushReplacementNamed(
+                                      HomePage_Screen.routeName);
+                                }
                               },
                               minWidth: MediaQuery.of(context).size.width,
                               child: Text(

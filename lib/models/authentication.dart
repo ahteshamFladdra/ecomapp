@@ -55,4 +55,6 @@ class Authentication with ChangeNotifier {
       throw error;
     }
   }
+
+  static signOut() {}
 }

@@ -2,6 +2,9 @@
 
 import 'dart:ui';
 
+import 'package:fashapp/componants/products.dart';
+import 'package:fashapp/pages/product_search.dart';
+import 'package:fashapp/widgets/featured_card.dart';
 import 'package:flutter/material.dart';
 
 class Cart_products extends StatefulWidget {
@@ -125,7 +128,9 @@ class Single_cart_product extends StatelessWidget {
             Expanded(
               child: IconButton(
                 iconSize: 20,
-                onPressed: () {},
+                onPressed: () {
+                  FeaturedCard;
+                },
                 icon: Icon(Icons.arrow_drop_up),
               ),
             ),

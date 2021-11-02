@@ -1,9 +1,11 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, sized_box_for_whitespace, camel_case_types, unused_field
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, sized_box_for_whitespace, camel_case_types, unused_field, unused_import
 
 import 'package:carousel_pro_nullsafety/carousel_pro_nullsafety.dart';
 import 'package:fashapp/componants/horizontal_listview.dart';
 import 'package:fashapp/componants/products.dart';
 import 'package:fashapp/pages/cart.dart';
+import 'package:fashapp/pages/login.dart';
+import 'package:fashapp/pages/product_search.dart';
 import 'package:fashapp/widgets/search.dart';
 import 'package:flutter/material.dart';
 
@@ -54,7 +56,7 @@ class _HomePage_Screen extends State<HomePage_Screen> {
                 ),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Search()));
+                      MaterialPageRoute(builder: (context) => products()));
                 }),
             IconButton(
                 icon: Icon(
@@ -87,7 +89,10 @@ class _HomePage_Screen extends State<HomePage_Screen> {
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomePage_Screen()));
+              },
               child: ListTile(
                 title: Text('Home Page'),
                 leading: Icon(
@@ -147,6 +152,18 @@ class _HomePage_Screen extends State<HomePage_Screen> {
                   title: Text('About'),
                   leading: Icon(
                     Icons.help,
+                    color: Colors.green,
+                  )),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Login()));
+              },
+              child: ListTile(
+                  title: Text('LogOut'),
+                  leading: Icon(
+                    Icons.logout,
                     color: Colors.green,
                   )),
             ),

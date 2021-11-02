@@ -30,7 +30,7 @@ Future main() async {
       providers: [ChangeNotifierProvider.value(value: Authentication())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HomePage_Screen(),
+        home: Login(),
         routes: {
           Singup_Screen.routeName: (context) => Singup_Screen(),
           Login.routeName: (context) => Login(),

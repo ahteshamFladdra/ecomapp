@@ -1,4 +1,8 @@
-// ignore: unused_import
+// ignore_for_file: unused_import
+
+import 'package:fashapp/componants/cart_product.dart';
+import 'package:fashapp/pages/product_deatil.dart';
+import 'package:fashapp/pages/product_search.dart';
 import 'package:flutter/material.dart';
 
 // ignore: use_key_in_widget_constructors
@@ -60,7 +64,10 @@ class Category extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(12),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ProductSearchScreen()));
+        },
         // ignore: avoid_unnecessary_containers, sized_box_for_whitespace
         child: Container(
           width: 80.0,

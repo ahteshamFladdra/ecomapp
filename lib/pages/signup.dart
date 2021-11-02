@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors, deprecated_member_use, prefer_final_fields, use_key_in_widget_constructors, unnecessary_new, prefer_const_literals_to_create_immutables, unused_import, avoid_web_libraries_in_flutter, camel_case_types, unused_element, prefer_const_declarations, unused_field, curly_braces_in_flow_control_structures, unused_local_variable
+// ignore_for_file: prefer_const_constructors, deprecated_member_use, prefer_final_fields, use_key_in_widget_constructors, unnecessary_new, prefer_const_literals_to_create_immutables, unused_import, avoid_web_libraries_in_flutter, camel_case_types, unused_element, prefer_const_declarations, unused_field, curly_braces_in_flow_control_structures, unused_local_variable, dead_code, unnecessary_null_comparison, empty_catches
 
-import 'dart:developer';
+import 'dart:html';
 
 import 'package:fashapp/pages/home.dart';
 import 'package:fashapp/provider/product.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/authentication.dart';
 
@@ -11,12 +12,13 @@ import 'login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
+import '../DB/users.dart';
 
-class RIKeys {
-  static final riKey1 = const Key('__RIKEY1__');
-  static final riKey2 = const Key('__RIKEY2__');
-  static final riKey3 = const Key('__RIKEY3__');
-}
+// class RIKeys {
+//   static final riKey1 = const Key('__RIKEY1__');
+//   static final riKey2 = const Key('__RIKEY2__');
+//   static final riKey3 = const Key('__RIKEY3__');
+// }
 
 class Singup_Screen extends StatefulWidget {
   static const routeName = '/signup';
@@ -25,7 +27,9 @@ class Singup_Screen extends StatefulWidget {
 }
 
 class _SingupState extends State<Singup_Screen> {
+  final _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey();
+  UserServices _userServices = UserServices();
   TextEditingController _passwordController = TextEditingController();
   Map<String, String> _authData = {
     'email': '',
@@ -53,20 +57,20 @@ class _SingupState extends State<Singup_Screen> {
             ));
   }
 
-  Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-    _formKey.currentState!.save();
+  // Future<void> _submit() async {
+  //   if (!_formKey.currentState!.validate()) {
+  //     return;
+  //   }
+  //   _formKey.currentState!.save();
 
-    await Provider.of<Authentication>(context, listen: false)
-        .Singup_Screen('email', 'password');
-    Navigator.of(context).pushReplacementNamed(HomePage_Screen.routeName);
-  }
+  //   await Provider.of<Authentication>(context, listen: true)
+  //       .Singup_Screen('email', 'password');
+  //   Navigator.of(context).pushReplacementNamed(HomePage_Screen.routeName);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductProvider>(context);
+    final productProvider = Provider.of<Authentication>(context);
 
     return Scaffold(
       key: _formKey,
@@ -231,13 +235,25 @@ class _SingupState extends State<Singup_Screen> {
                             elevation: 0.0,
                             child: MaterialButton(
                               onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: Text('signup faild'),
-                                  ));
-                                  return;
-                                }
+                                setState(() {
+                                  hidePass = true;
+                                });
+                                try {
+                                  final newuser = await _auth
+                                      .createUserWithEmailAndPassword(
+                                          email: _email.toString(),
+                                          password: _password.toString());
+                                  if (newuser != null) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Login()),
+                                    );
+                                    setState(() {
+                                      hidePass = false;
+                                    });
+                                  }
+                                } catch (e) {}
                               },
                               minWidth: MediaQuery.of(context).size.width,
                               child: Text(
@@ -269,5 +285,26 @@ class _SingupState extends State<Singup_Screen> {
         ],
       ),
     );
+
+    // Future validateForm() async {
+    //   FormState? formState = _formKey.currentState;
+    //   Map value;
+    //   if(formState!.validate()) {
+    //     UserCredential user = await CredentialUserData.userCredential();
+    //     if (user ==null) {
+    //       Credential.createUserWithEmailAndPassword(
+    //         email: _email.text,
+    //         password: _password.text
+    //       ).then(user) => {
+
+    //         _userServices.creatUser(
+    //           {
+    //             "username": _name
+    //           }
+    //         ),
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
