@@ -1,7 +1,3 @@
-// ignore_for_file: prefer_const_constructors, deprecated_member_use, prefer_final_fields, use_key_in_widget_constructors, unnecessary_new, prefer_const_literals_to_create_immutables, unused_import, avoid_web_libraries_in_flutter, camel_case_types, unused_element, prefer_const_declarations, unused_field, curly_braces_in_flow_control_structures, unused_local_variable, dead_code, unnecessary_null_comparison, empty_catches
-
-import 'dart:html';
-
 import 'package:fashapp/pages/home.dart';
 import 'package:fashapp/provider/product.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -73,7 +69,6 @@ class _SingupState extends State<Singup_Screen> {
     final productProvider = Provider.of<Authentication>(context);
 
     return Scaffold(
-      key: _formKey,
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
@@ -239,11 +234,11 @@ class _SingupState extends State<Singup_Screen> {
                                   hidePass = true;
                                 });
                                 try {
-                                  final newuser = await _auth
+                                  UserCredential newuser = await _auth
                                       .createUserWithEmailAndPassword(
-                                          email: _email.toString(),
-                                          password: _password.toString());
-                                  if (newuser != null) {
+                                          email: _email.text,
+                                          password: _password.text);
+                                  if (newuser.user != null) {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
