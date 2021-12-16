@@ -306,7 +306,10 @@ class _LoginState extends State<Login> {
                                       await _auth.signInWithEmailAndPassword(
                                           email: _email.toString(),
                                           password: _password.toString());
+
                                   print(newUser.toString());
+                                  Navigator.of(context).pushReplacementNamed(
+                                      HomePage_Screen.routeName);
                                   if (newUser != null) {
                                     Fluttertoast.showToast(
                                         msg: "Login Successfull",
@@ -320,10 +323,7 @@ class _LoginState extends State<Login> {
                                       hidePass = false;
                                     });
                                   }
-                                } catch (e) {
-                                  Navigator.of(context).pushReplacementNamed(
-                                      HomePage_Screen.routeName);
-                                }
+                                } catch (e) {}
                               },
                               minWidth: MediaQuery.of(context).size.width,
                               child: Text(
